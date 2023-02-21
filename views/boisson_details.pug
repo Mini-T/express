@@ -1,9 +1,10 @@
-extends navigbar
+extends navbar
 
 block boisson_details
 
     img(src=data.image_url, alt="")
-    h1=data.name 
-    h2=data.tagline 
-    p=data.description 
+    h1 Name: #{data.name} 
+    h2 Slogan: #{data.tagline} 
+    p Description: #{data.description} 
+    p Taux d'alcool: #{data.abv}
     h3 First brewed on #{data.first_brewed}

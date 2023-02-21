@@ -5,6 +5,8 @@ const axios = require('axios')
 dotenv.config()
 app.set("view engine", "pug");
 app.set('views', './views')
+const Server = require('socket.io').Server;
+
 
 app.get('/', (req,res) =>{
     res.redirect(301, `http://localhost:${process.env.port}/accueil`)
@@ -29,6 +31,7 @@ app.get('/boissons', async (req,res) => {
 app.get('/boisson-details/:id', async (req,res) => {
     let beerId = req.params.id
     let beer = await axios(`https://api.punkapi.com/v2/beers/${beerId}`)
+    console.log(beer)
     res.setHeader('Content-Type', 'text/html; charset=utf-8')
     res.render('boisson_details', {title: beer.data[0].name, data: beer.data[0]})
 })
@@ -39,8 +42,21 @@ app.get('/random', async (req,res) => {
     res.render('random_boisson', {title: beer.data[0].name, data: beer.data[0]})
 })
 
-app.get('/contact', (req,res) => {
+const io = new Server(3000);
 
+io.on("connection", (socket) => {
+  // send a message to the client
+  socket.emit("hello from server", {});
+
+  // receive a message from the client
+  socket.on("chat message", msg => {
+    io.emit('chat message', msg)
+});
+});
+
+app.get('/contact', (req,res) => {
+    res.setHeader('Content-Type', 'text/html; charset=utf-8')
+    res.render('contact', {title: "Contact us"})
 })
 
 app.listen(process.env.port, () => {

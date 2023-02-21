@@ -1,0 +1,21 @@
+extends layout
+
+block navbar
+    
+    nav.navbar.navbar-expand-lg.navbar-light.bg-light
+    a.navbar-brand(href='#') Punk IPA
+        ul.navbar-nav.mr-auto
+        li.nav-item.active
+            a.nav-link(href='/accueil') Home
+        li.nav-item
+            a.nav-link(href='/boissons') Liste des Boissons
+        ul.navbar-nav.float-right
+        li.nav-item
+            a.nav-link(href='/random') Random
+        li.nav-item
+            a.nav-link(href='/contact') Contact
+    block accueil 
+    block boisson_details 
+    block boissons 
+    block contact 
+    block random_boisson 
