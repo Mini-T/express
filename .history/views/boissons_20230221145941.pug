@@ -1,0 +1,8 @@
+extends navigbar 
+
+block boissons
+    div.list
+        each beer in beers
+            h1=beer.name
+            span=beer.tagline 
+            p

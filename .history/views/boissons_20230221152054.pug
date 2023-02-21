@@ -1,0 +1,10 @@
+extends navigbar 
+
+block boissons
+    div.list
+        each beer in beers
+            h1=beer.name
+            span=beer.tagline 
+            img(src=beer.image_url, alt="")
+            p=beer.description
+            a(href=`boisson-details/${beer.id}`) #{beer.name}

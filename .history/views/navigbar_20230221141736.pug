@@ -1,0 +1,24 @@
+
+extends layout
+
+block navigbar
+
+  nav.navbar.navbar-expand-lg.navbar-light.bg-light
+    a.navbar-brand(href='#') Punk Beers
+    button.navbar-toggler(type='button')
+      span.navbar-toggler-icon
+    .collapse.navbar-collapse(id='navbarSupportedContent')
+      ul.navbar-nav.mr-auto
+        li.nav-item.active
+          a.nav-link(href='/accueil') accueil
+        li.nav-item
+          a.nav-link(href='/boissons') All Beers
+          a.nav-link(href='/contact') Contact us!
+        li.nav-item
+        li.nav-item
+          a.nav-link(href='/random') Random Beer
+
+  block boissons
+
+ 
+  
