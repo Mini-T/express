@@ -2,20 +2,27 @@ extends layout
 
 block navbar
     
-    nav.navbar.navbar-expand-lg.navbar-light.bg-light
-    a.navbar-brand(href='#') Punk IPA
-        ul.navbar-nav.mr-auto
-        li.nav-item.active
-            a.nav-link(href='/accueil') Home
-        li.nav-item
-            a.nav-link(href='/boissons') Liste des Boissons
-        ul.navbar-nav.float-right
-        li.nav-item
-            a.nav-link(href='/random') Random
-        li.nav-item
-            a.nav-link(href='/contact') Contact
+    nav.navbar
+        a(href='#') Punk IPA
+            ul.links
+            li.nav-item#accueil
+                a.nav-link(href='/accueil') Home
+            li.nav-item#boissons
+                a.nav-link(href='/boissons') Liste des Boissons
+            ul.navbar-nav
+            li.nav-item#random_boisson
+                a.nav-link(href='/random') Random
+            li.nav-item#contact
+                a.nav-link(href='/contact') Contact
     block accueil 
     block boisson_details 
     block boissons 
     block contact
     block random_boisson 
+    script(src="../functions.js")
+    //- la syntax #{id} resout la string passé pour selectionner la balise en question
+        lorsque placé dans un script, ce n'est pas normal selon chat gpt,
+        il est possible que javascript fasse automatiquement un getElementById sur la string,
+        je suis pas sur de comprendre mais ça fonctionne
+    script.
+        assignActive('#{active}')

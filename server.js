@@ -1,48 +1,42 @@
 const express = require('express')
-const app = express()
 const dotenv = require('dotenv')
 const axios = require('axios')
-dotenv.config()
+const { Server } = require('socket.io');
 const http = require('http')
+const path = require('path');
+const { render } = require('pug');
+//socket server
+const app = express()
+const server = http.createServer(app)
+dotenv.config()
 app.set("view engine", "pug");
 app.set('views', './views')
-const server = http.createServer(app)
-const { Server } = require('socket.io');
-const path = require('path');
 
 app.get('/', (req,res) =>{
     res.redirect(301, `http://localhost:${process.env.port}/accueil`)
 })
 
 app.get('/accueil', (req,res) => {
-    page = 'root'
+    renderHtml(res, 'accueil', 'Punk: Home')
 
-    res.setHeader('Content-Type', 'text/html; charset=utf-8')
-    res.render('accueil', {title: ('Punk: Home')})
 })
 
 app.get('/boissons', async (req,res) => {
     let resp = await axios('https://api.punkapi.com/v2/beers')
-    console.log(resp)
-
-    res.setHeader('Content-Type', 'text/html; charset=utf-8')
-    res.render('boissons', {title: 'Punk: Beers', beers: resp.data})
-
+    renderHtml(res, 'boissons', 'Punk: Beers', resp.data)
 })
 
 app.get('/boisson-details/:id', async (req,res) => {
     let beerId = req.params.id
     let beer = await axios(`https://api.punkapi.com/v2/beers/${beerId}`)
-    console.log(beer)
-    res.setHeader('Content-Type', 'text/html; charset=utf-8')
-    res.render('boisson_details', {title: beer.data[0].name, data: beer.data[0]})
-})
+    renderHtml(res, 'boisson_details', beer.data[0].name, beer.data[0])
+
+  })
 
 app.get('/random', async (req,res) => {
     let beer = await axios(`https://api.punkapi.com/v2/beers/random`)
-    res.setHeader('Content-Type', 'text/html; charset=utf-8')
-    res.render('random_boisson', {title: beer.data[0].name, data: beer.data[0]})
-})
+    renderHtml(res, 'random_boisson', beer.data[0].name, beer.data[0])
+  })
 
 // autorise les connections uniquement depuis localhost:8080, NE MARCHE PAS SANS
 const io = new Server(server, {
@@ -69,14 +63,17 @@ server.listen(3000, () => {
 
 //renvoie la page contact
 app.get('/contact', (req,res) => {
-    res.header('Content-Type', 'text/html; charset=utf-8');
-    res.render('contact', {title: "Contact us"})
+    renderHtml(res, "contact", "Contact us")
 })
 
 //transmet le script socket.io.js lorsque le client en fait la requête
 app.get('/socket.io/socket.io.js', (req, res) => {
     res.sendFile(path.join(__dirname, 'node_modules', 'socket.io', 'client-dist', 'socket.io.js'));
   });
+
+app.get('/functions.js', (req, res) => {
+  res.sendFile(path.join(__dirname, 'functions.js'));
+});
 
 app.get('/css/styles.css', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'css', 'styles.css'));
@@ -85,3 +82,13 @@ app.get('/css/styles.css', (req, res) => {
 app.listen(process.env.port, () => {
     console.log(`webserver listening on port ${process.env.port}`)
 })
+
+function renderHtml(res, page, title, data = null) {
+  res.header('Content-Type', 'text/html; charset=utf-8');
+  //la page détails n'a pas de lien dans la navbar, j'annule donc le paramètre active
+  if(page === 'boisson_details'){
+    res.render(page, {title: title, data: data})
+    return
+  }
+  res.render(page, {title: title, active: page, data: data})
+}

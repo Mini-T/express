@@ -2,7 +2,7 @@ extends navbar
 
 block boissons
     div.list
-        each beer in beers
+        each beer in data
             h1=beer.name
             span=beer.tagline 
             img(src=beer.image_url, alt="")
