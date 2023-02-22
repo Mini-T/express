@@ -14,7 +14,6 @@ block contact
             const message = document.querySelector('#message').value;
             e.preventDefault()
             if(!!message) {
-                console.log('yes')
                 socket.emit('message', `${message}`);
                 document.querySelector('#message').value = '';
                 return false; 

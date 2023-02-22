@@ -20,9 +20,5 @@ block navbar
     block contact
     block random_boisson 
     script(src="../functions.js")
-    //- la syntax #{id} resout la string passé pour selectionner la balise en question
-        lorsque placé dans un script, ce n'est pas normal selon chat gpt,
-        il est possible que javascript fasse automatiquement un getElementById sur la string,
-        je suis pas sur de comprendre mais ça fonctionne
     script.
         assignActive('#{active}')
