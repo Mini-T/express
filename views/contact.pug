@@ -7,17 +7,26 @@ block contact
     form#contact(action="")
         input(type="text" autocomplete="off")#message
         button send 
-    
+    script(src='../socket.io/socket.io.js')
     script.
-        const socket = io();
-        $('form').submit(function() {
-          const message = $('#message').val();
-
-          socket.emit('chatter', `${message}`);
-          $('#message').val('');
-          return false; 
+        const socket = io("http://localhost:3000");
+        document.querySelector('form').addEventListener("submit", function(e) {
+            const message = document.querySelector('#message').value;
+            e.preventDefault()
+            if(!!message) {
+                console.log('yes')
+                socket.emit('message', `${message}`);
+                document.querySelector('#message').value = '';
+                return false; 
+            }
+            console.log('empty')
+            return false 
         });
 
-        socket.on('chatter', function(message) {
-          $('#messages').append($('<li>').text(message));
+        socket.on('message', function(message) {
+            let msg = document.createElement("li")
+            msg.innerHTML = message
+            console.log('appending')
+            document.querySelector('#messages').appendChild(msg);
         });
+

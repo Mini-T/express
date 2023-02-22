@@ -3,9 +3,18 @@ const app = express()
 const dotenv = require('dotenv')
 const axios = require('axios')
 dotenv.config()
+const http = require('http')
 app.set("view engine", "pug");
 app.set('views', './views')
-const Server = require('socket.io').Server;
+const server = http.createServer(app)
+const { Server } = require('socket.io');
+const path = require('path');
+const cors = require('cors');
+
+
+app.get('/socket.io/socket.io.js', (req, res) => {
+  res.sendFile(path.join(__dirname, 'node_modules', 'socket.io', 'client-dist', 'socket.io.js'));
+});
 
 
 app.get('/', (req,res) =>{
@@ -42,17 +51,27 @@ app.get('/random', async (req,res) => {
     res.render('random_boisson', {title: beer.data[0].name, data: beer.data[0]})
 })
 
-const io = new Server(3000);
+// autorise les connections 
+const io = new Server(server, {
+    cors: {
+      origin: "http://localhost:8080",
+      methods: ["GET", "POST"]
+    }
+  });
 
 io.on("connection", (socket) => {
   // receive a message from the client
+  console.log('connected')
   socket.on("message", msg => {
     io.emit('message', msg)
 });
 });
+server.listen(3000, () => {
+    console.log('socket!')
+})
 
 app.get('/contact', (req,res) => {
-    res.setHeader('Content-Type', 'text/html; charset=utf-8')
+    res.header('Content-Type', 'text/html; charset=utf-8');
     res.render('contact', {title: "Contact us"})
 })
 
