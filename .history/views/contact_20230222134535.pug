@@ -8,16 +8,17 @@ block contact
         input(type="text" autocomplete="off")#message
         button send 
     
+    script(src="../socket.io/socket.io.js")
     script.
         const socket = io();
         $('form').submit(function() {
           const message = $('#message').val();
 
-          socket.emit('chatter', `${message}`);
+          socket.emit('chatter', `${name} : ${message}`);
           $('#message').val('');
           return false; 
         });
 
         socket.on('chatter', function(message) {
-          $('#messages').append($('<li>').text(message));
+          $('#chat-messages').append($('<li>').text(message));
         });

@@ -1,12 +1,13 @@
-const express = require('express')
+import express from 'express'
 const app = express()
-const dotenv = require('dotenv')
-const axios = require('axios')
+import dotenv from 'dotenv'
+import axios from 'axios'
 dotenv.config()
 app.set("view engine", "pug");
 app.set('views', './views')
-const Server = require('socket.io').Server;
+import Server from 'socket.io';
 
+app.use(express.static())
 
 app.get('/', (req,res) =>{
     res.redirect(301, `http://localhost:${process.env.port}/accueil`)

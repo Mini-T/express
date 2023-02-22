@@ -1,0 +1,14 @@
+extends navbar 
+
+block contact 
+
+    ul#messages 
+
+    form#contact(action="")
+        input(type="text" autocomplete="off")#message
+        button send 
+    
+    script src="/socket.io/socket.io.js"></script>
+   
+    script
+        include ../client.js 

@@ -1,7 +1,5 @@
 
-import io from "socket.io-client"
-
-const socket = io();
+const socket = io("ws://localhost:3000");
 
 const form = document.getElementById('contact')
 const input = document.getElementById('message')

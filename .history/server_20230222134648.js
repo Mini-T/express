@@ -45,6 +45,7 @@ app.get('/random', async (req,res) => {
 const io = new Server(3000);
 
 io.on("connection", (socket) => {
+
   // receive a message from the client
   socket.on("message", msg => {
     io.emit('message', msg)

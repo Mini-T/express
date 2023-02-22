@@ -8,6 +8,7 @@ block contact
         input(type="text" autocomplete="off")#message
         button send 
     
+    script(src="../socket.io/socket.io.js")
     script.
         const socket = io();
         $('form').submit(function() {

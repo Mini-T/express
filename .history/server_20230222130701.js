@@ -1,5 +1,5 @@
-const express = require('express')
-const app = express()
+import express from 'express'
+import app = express()
 const dotenv = require('dotenv')
 const axios = require('axios')
 dotenv.config()

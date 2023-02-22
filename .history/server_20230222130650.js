@@ -1,4 +1,4 @@
-const express = require('express')
+const express = from 'express'
 const app = express()
 const dotenv = require('dotenv')
 const axios = require('axios')

@@ -1,5 +1,5 @@
 
-import io from "socket.io-client"
+../socket.io/socket.io.js
 
 const socket = io();
 

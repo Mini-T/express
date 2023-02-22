@@ -9,7 +9,7 @@ block contact
         button send 
     
     script.
-        const socket = io();
+        const socket = io('ws://localhost:3000');
         $('form').submit(function() {
           const message = $('#message').val();
 

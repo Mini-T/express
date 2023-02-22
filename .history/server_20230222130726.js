@@ -1,7 +1,7 @@
-const express = require('express')
+import express from 'express'
 const app = express()
-const dotenv = require('dotenv')
-const axios = require('axios')
+import dotenv from 'dotenv'
+const axios = 'axios'
 dotenv.config()
 app.set("view engine", "pug");
 app.set('views', './views')

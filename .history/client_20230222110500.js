@@ -1,9 +1,8 @@
+const io  = "socket.io-client";
 
-import io from "socket.io-client"
+const socket = io("ws://localhost:3000");
 
-const socket = io();
-
-const form = document.getElementById('contact')
+const form = document.getElementById(contact)
 const input = document.getElementById('message')
 
 form.addEventListener("submit", function(e){
@@ -15,10 +14,11 @@ form.addEventListener("submit", function(e){
 })
 
 // receive a message from the server
-socket.on('message', (msg) => {
+socket.on('chat message', (msg) => {
     let messages = document.getElementById('messages');
     let item = document.createElement('li');
     item.textContent = msg;
     messages.appendChild(item);
     window.scrollTo(0, document.body.scrollHeight);
+    
   });

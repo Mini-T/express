@@ -1,5 +1,5 @@
 
-import io from "socket.io-client"
+const io = require('../socket.io/socket.io.js').Client
 
 const socket = io();
 
