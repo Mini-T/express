@@ -9,13 +9,6 @@ app.set('views', './views')
 const server = http.createServer(app)
 const { Server } = require('socket.io');
 const path = require('path');
-const cors = require('cors');
-
-
-app.get('/socket.io/socket.io.js', (req, res) => {
-  res.sendFile(path.join(__dirname, 'node_modules', 'socket.io', 'client-dist', 'socket.io.js'));
-});
-
 
 app.get('/', (req,res) =>{
     res.redirect(301, `http://localhost:${process.env.port}/accueil`)
@@ -51,7 +44,7 @@ app.get('/random', async (req,res) => {
     res.render('random_boisson', {title: beer.data[0].name, data: beer.data[0]})
 })
 
-// autorise les connections 
+// autorise les connections uniquement depuis localhost:8080, NE MARCHE PAS SANS
 const io = new Server(server, {
     cors: {
       origin: "http://localhost:8080",
@@ -59,22 +52,36 @@ const io = new Server(server, {
     }
   });
 
+// Ecoute les connections au socket
 io.on("connection", (socket) => {
-  // receive a message from the client
-  console.log('connected')
+  
   socket.on("message", msg => {
+    // broadcast le message
     io.emit('message', msg)
+    
+    // envoi un message automatique
+    io.emit('response', 'We received your message and will get back to you ASAP !')
 });
 });
 server.listen(3000, () => {
-    console.log('socket!')
+    console.log('socket listening on port 3000')
 })
 
+//renvoie la page contact
 app.get('/contact', (req,res) => {
     res.header('Content-Type', 'text/html; charset=utf-8');
     res.render('contact', {title: "Contact us"})
 })
 
+//transmet le script socket.io.js lorsque le client en fait la requête
+app.get('/socket.io/socket.io.js', (req, res) => {
+    res.sendFile(path.join(__dirname, 'node_modules', 'socket.io', 'client-dist', 'socket.io.js'));
+  });
+
+app.get('/css/styles.css', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'css', 'styles.css'));
+});
+
 app.listen(process.env.port, () => {
-    console.log('listening')
+    console.log(`webserver listening on port ${process.env.port}`)
 })

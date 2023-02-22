@@ -25,7 +25,14 @@ block contact
 
         socket.on('message', function(message) {
             let msg = document.createElement("li")
-            msg.innerHTML = message
+            msg.innerHTML = `Me: ${message}`
+            console.log('appending')
+            document.querySelector('#messages').appendChild(msg);
+        });
+
+        socket.on('response', function(message) {
+            let msg = document.createElement("li")
+            msg.innerHTML = `PunkBot: ${message}`
             console.log('appending')
             document.querySelector('#messages').appendChild(msg);
         });
