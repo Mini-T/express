@@ -32,7 +32,7 @@ app.get('/boisson-details/:id', async (req,res) => {
 
   })
 
-app.get('/random', async (req, res) => {
+app.get('/random', async (req,res) => {
     let beer = await axios(`https://api.punkapi.com/v2/beers/random`)
     renderHtml(res, 'random_boisson', beer.data[0].name, beer.data[0])
 })
@@ -51,15 +51,6 @@ app.get('/functions.js', (req, res) => {
     res.sendFile(path.join(__dirname, 'functions.js'));
 });
 
-// app.get('/resources/:path', (req, res) => {
-//     console.log(req.params.path)
-//     if(req.params.path.includes('css')){
-//         res.sendFile(`${__dirname}/views/css/${req.params.path}`);
-//         return
-//     }
-//     res.sendFile(`${__dirname}/${req.params.path}`);
-// });
-
 app.get('/css/styles.css', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'css', 'styles.css'));
 });
@@ -70,7 +61,7 @@ const io = new Server(server, {
       origin: "http://localhost:8080",
       methods: ["GET", "POST"]
     }
-});
+  });
 
 // Ecoute les connections au socket
 io.on("connection", (socket) => {

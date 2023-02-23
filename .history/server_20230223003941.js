@@ -51,14 +51,14 @@ app.get('/functions.js', (req, res) => {
     res.sendFile(path.join(__dirname, 'functions.js'));
 });
 
-// app.get('/resources/:path', (req, res) => {
-//     console.log(req.params.path)
-//     if(req.params.path.includes('css')){
-//         res.sendFile(`${__dirname}/views/css/${req.params.path}`);
-//         return
-//     }
-//     res.sendFile(`${__dirname}/${req.params.path}`);
-// });
+app.get('/resources/:path', (req, res) => {
+    console.log(req.params.path)
+    if(req.params.path.includes('css')){
+        console.log('css!')
+        console.log(req.params.path)
+    }
+    res.sendFile(`${__dirname}/${req.params.path}`);
+});
 
 app.get('/css/styles.css', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'css', 'styles.css'));

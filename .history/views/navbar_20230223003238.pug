@@ -1,0 +1,24 @@
+extends layout
+
+block navbar
+    
+    nav.navbar
+        a(href='#') Punk IPA
+            ul.links
+            li.nav-item#accueil
+                a.nav-link(href='/accueil') Home
+            li.nav-item#boissons
+                a.nav-link(href='/boissons') Liste des Boissons
+            ul.navbar-nav
+            li.nav-item#random_boisson
+                a.nav-link(href='/random') Random
+            li.nav-item#contact
+                a.nav-link(href='/contact') Contact
+    block accueil 
+    block boisson_details 
+    block boissons 
+    block contact
+    block random_boisson 
+    script(src="../resourcesfunctions.js")
+    script.
+        assignActive('#{active}')
