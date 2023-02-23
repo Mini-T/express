@@ -24,6 +24,7 @@ block navbar
     block contact
     block random_boisson
   
-    script(src="/functions.js")
-    script.
+    
+    script(type="module").
+        import { assignActive } from '/functions.js'
         assignActive('#{active}')

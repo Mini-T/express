@@ -8,6 +8,8 @@ const { render } = require('pug');
 //socket server
 const app = express()
 const server = http.createServer(app)
+const myfunctions = require('./public/functions')
+console.log(myfunctions)
 dotenv.config()
 app.set("view engine", "pug");
 app.set('views', './views')
@@ -61,6 +63,9 @@ io.on("connection", (socket) => {
         let registerDb = false
         if (obj.message.slice(0, 10) === '/storeToDb') {
             registerDb = true
+        }
+        if(!!registerDb){
+            myfunctions.insertMessage(myfunctions.initDB(), obj.message, obj.date, obj.sender)
         }
         // broadcast le message
         io.emit('message', {content: obj.message, datetime: obj.date, sender:obj.sender})

@@ -1,9 +1,9 @@
 
-function assignActive(id) {
+export function assignActive(id) {
     if(id){document.getElementById(id).classList.add("active")}
 }
 
-function printMessage(sender, message, date) {
+export function printMessage(sender, message, date) {
     let msg = document.createElement("li")
     msg.innerHTML = `${sender}: ${message}`
     msg.classList.add("list-group-item", "flexli")
@@ -13,7 +13,7 @@ function printMessage(sender, message, date) {
     msg.appendChild(time);
 }
 
-function initDB() {
+export function initDB() {
     const mariadb = require('mariadb');
 const pool = mariadb.createPool({
      host: 'localhost', 
@@ -24,7 +24,7 @@ const pool = mariadb.createPool({
 return pool
 }
 
-function insertMessage(pool, content, datetime, sender){
+export function insertMessage(pool, content, datetime, sender){
     pool.getConnection()
     .then(conn => {
     
@@ -47,3 +47,10 @@ function insertMessage(pool, content, datetime, sender){
       //not connected
     });
 }
+
+module.exports = {
+    assignActive: assignActive,
+    printMessage: printMessage,
+    initDB: initDB,
+    insertMessage: insertMessage
+  };
