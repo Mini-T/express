@@ -1,10 +1,13 @@
 extends navbar 
 
 block boissons
-    div.list
-        each beer in data
-            h1=beer.name
-            span=beer.tagline 
-            img(src=beer.image_url, alt="")
-            p=beer.description
-            a(href=`boisson-details/${beer.id}`) #{beer.name}
+  div.list
+    each beer in data
+      .col-md-4.mb-4
+        .card
+          img.card-img-top(src=beer.image_url, alt="" style="height: 400px; object-fit:contain; width:auto")
+          .card-body
+            h5.card-title=beer.name
+            span Tag-line: #{beer.tagline} 
+            p.card-text Description: #{beer.description}
+            a.btn.btn-primary(href=`boisson-details/${beer.id}`) #{beer.name}

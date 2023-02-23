@@ -1,10 +1,13 @@
 extends navbar
 
 block boisson_details
-
-    img(src=data.image_url, alt="")
-    h1=data.name 
-    h2=data.tagline 
-    p=data.description 
-    p=data.abv
-    h3 First brewed on #{data.first_brewed}
+    .col-md-4.mb-4
+    .card
+        img.card-img-top(src=data.image_url, alt="" style="height: 400px; object-fit: contain; width: auto;")
+        .card-body
+            h5.card-title= data.name
+            span Tag-line: #{data.tagline}
+            p.card-text Description: #{data.description}
+            p.card-text Taux d'alcool: #{data.abv}
+            p.card-text First brewed on #{data.first_brewed}
+            a.btn.btn-primary(href=`boisson-details/#{data.id}`) #{data.name}
