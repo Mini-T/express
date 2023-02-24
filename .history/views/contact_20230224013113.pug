@@ -1,0 +1,41 @@
+extends navbar 
+
+block contact 
+    div.container-fluid
+        h1.text-center.col-md-6.mx-auto Contact Us 
+        div.row.justify-content-center.align-items-center.min-vh-100
+            div.col-md-8
+            button(onclick="")
+                ul#messages.list-group.mb-3
+
+                form#contact.form-group
+                    input(type="text" autocomplete="off" class="form-control")#message
+                    button.btn.btn-primary.send(type="submit") Send
+            
+    script(src='/socket.io/client-dist/socket.io.js')
+    script.
+        const socket = io("http://localhost:3000");
+        document.querySelector('form').addEventListener("submit", function(e) {
+            let message = document.querySelector('#message').value;
+            
+            e.preventDefault()
+            if(!!message) {
+                date = new Date()
+                date = date.toLocaleString()
+                socket.emit('message',{message: message, date: date, sender: 'You'});
+                document.querySelector('#message').value = '';
+                return false; 
+            }
+            console.log('empty')
+            return false 
+        });
+
+        socket.on('message', function(message) {
+            console.log(message.content)
+            printMessage(message.sender, message.content, message.datetime)
+        });
+        socket.on('response', function(message) {
+            printMessage(message.sender, message.content, message.datetime)
+
+        });
+

@@ -1,0 +1,31 @@
+extends layout
+
+block navbar
+    
+    nav.navbar.navbar-expand-lg.navbar-light.bg-light
+        a.navbar-brand(href='#') Punk IPA
+        button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')    
+            span.navbar-toggler-icon
+            
+        .collapse.navbar-collapse(id='navbarSupportedContent')
+            ul.navbar-nav.mr-auto
+                li.nav-item#accueil
+                    a.nav-link(href='/accueil') Home
+                li.nav-item#boissons
+                    a.nav-link(href='/boissons') Liste des Boissons
+            ul.navbar-nav.float-right
+                li.nav-item#random_boisson
+                    a.nav-link(href='/random') Random
+                li.nav-item#contact
+                    a.nav-link(href='/contact') Contact
+    block accueil 
+    block boisson_details 
+    block boissons 
+    block contact
+    block random_boisson
+  
+    
+    script(type="module" src="/functions.js")
+    script.
+        import { assignActive } from '/functions.js'
+        assignActive('#{active}')
