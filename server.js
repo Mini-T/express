@@ -58,24 +58,43 @@ const io = new Server(server, {
 
 // Ecoute les connections au socket
 io.on("connection", (socket) => {
-
+    let date = new Date()
+    date = date.toLocaleString() 
+    io.emit("message",{content:'You can store our messages in database by typing /storeToDb (and only that)' ,datetime: date, sender: 'PunkBot'} )
+    let loadedHistory = false
+    let registerDb = false
+    let bot_response = 'We received your message and will get back to you ASAP !'
     socket.on("message", obj => {
-        let registerDb = false
-        if (obj.message.slice(0, 10) === '/storeToDb') {
-            registerDb = true
-        }
         if(!!registerDb){
-            myfunctions.insertMessage(myfunctions.initDB(), obj.message, obj.date, obj.sender)
+            myfunctions.insertMessage(myfunctions.initDB(), bot_response, obj.date, 'PunkBot').then((result) => console.log(result))
+            myfunctions.insertMessage(myfunctions.initDB(), obj.message, obj.date, obj.sender).then((result) => console.log(result))
+        }
+    
+        if (obj.message.trim() === '/storeToDb') {
+            if(registerDb) {
+                myfunctions.broadcastAndRespond(io, obj, 'Database is already activated')
+                return
+            }
+            myfunctions.broadcastAndRespond(io, obj, 'Database activated, every message from you will now be stored')
+            registerDb = true
+            return
+        } else if (obj.message.trim().slice(0, 10) === '/storeToDb'){
+            myfunctions.broadcastAndRespond(io, obj, "the /storeToDb command doesn't take any argument")
+            return
         }
         // broadcast le message
-        io.emit('message', {content: obj.message, datetime: obj.date, sender:obj.sender})
-        // envoi un message automatique
-        io.emit('response', {content: 'We received your message and will get back to you ASAP !', sender: 'PunkBot', datetime:obj.date})
+        myfunctions.broadcastAndRespond(io, obj, bot_response)
     });
 
-    socket.on("historyRequest", () => {
-        console.log(myfunctions.getHistory(myfunctions.initDB()))
-        io.emit("history", myfunctions.getHistory(myfunctions.initDB()))
+    socket.on("historyRequest", async () => {
+        if(!loadedHistory){
+            result = myfunctions.getHistory().then(result =>{
+                io.emit('history', {result: result})
+                loadedHistory = true
+            })
+        } else {
+            console.log('history already loaded')
+        }
     })
 });
 

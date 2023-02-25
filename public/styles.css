@@ -24,4 +24,27 @@ body {
 li.list-group-item.flexli {
     display: flex;
     justify-content: space-between;
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    word-wrap: normal;
+    word-break: break-all;
+}
+
+li.list-group-item.flexli > span {
+    width: 70%
+}
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+#time {
+    text-align: right;
+
+    width: 30%;
+}
+#history {
+    left: 91%;
+    position: relative;
 }

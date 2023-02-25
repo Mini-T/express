@@ -4,14 +4,15 @@ block contact
     div.container-fluid
         h1.text-center.col-md-6.mx-auto Contact Us 
         div.row.justify-content-center.align-items-center.min-vh-100
-            button#history getHistory
             div.col-md-8
+                button#history.btn.btn-primary Load History
                 ul#messages.list-group.mb-3
-
                 form#contact.form-group
                     input(type="text" autocomplete="off" class="form-control")#message
-                    button.btn.btn-primary.send(type="submit") Send
-            
+                    div.buttons
+                        button.btn.btn-primary.send(type="submit") Send
+                        
+
     script(src='/socket.io/client-dist/socket.io.js')
     script.
         const socket = io("http://localhost:3000");
@@ -20,8 +21,9 @@ block contact
             
             e.preventDefault()
             if(!!message) {
-                date = new Date()
-                date = date.toLocaleString()
+                let date = new Date()
+                date = date.toLocaleString().split(" ").join(' à ')
+                console.log(date)
                 socket.emit('message',{message: message, date: date, sender: 'You'});
                 document.querySelector('#message').value = '';
                 return false; 
@@ -31,22 +33,26 @@ block contact
         });
 
         document.getElementById('history').addEventListener('click', () => {
-            socket.emit('historyRequest')
+            socket.emit('historyRequest', {})
         })
 
         socket.on("history", function(messages){
-            messages.foreach(message => {
-                printMessage(message.sender, message.content, message.datetime)
-            })
-            
+
+            let timeField = document.querySelectorAll('span#time')
+            i = 0
+            for(field of timeField) {
+                console.log(field.textContent)
+                //- messages.result.filter((message) => message.datetime === field.text)
+            }
+            printMessage(messages, true)
         })
 
         socket.on('message', function(message) {
-            console.log(message.content)
-            printMessage(message.sender, message.content, message.datetime)
+            
+            printMessage(message)
         });
         socket.on('response', function(message) {
-            printMessage(message.sender, message.content, message.datetime)
+            printMessage(message)
 
         });
 

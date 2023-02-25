@@ -1,66 +1,80 @@
 
 function assignActive(id) {
-    if(id){document.getElementById(id).classList.add("active")}
+  if (id) { document.getElementById(id).classList.add("active") }
 }
 
-function printMessage(sender, message, date) {
-    let msg = document.createElement("li")
-    msg.innerHTML = `${sender}: ${message}`
-    msg.classList.add("list-group-item", "flexli")
-    document.querySelector('#messages').appendChild(msg);
-    let time = document.createElement("span")
-    time.innerHTML = date
-    msg.appendChild(time);
+function printMessage(obj, isHistory = false) {
+  if (isHistory) {
+    for(message of obj.result) {
+      console.log(message)
+      let msg = document.createElement("li")
+      let content = document.createElement("span")
+      content.innerHTML = `${message.sender}: ${message.content}`
+      msg.classList.add("list-group-item", "flexli")
+      document.querySelector('#messages').insertBefore(msg, document.querySelector('.list-group-item'))
+      let time = document.createElement("span")
+      time.setAttribute("id", "time")
+      time.innerHTML = message.datetime
+      msg.appendChild(content)
+      msg.appendChild(time);
+    }
+    return
+  }
+  let msg = document.createElement("li")
+  let content = document.createElement("span")
+  content.innerHTML = `${obj.sender}: ${obj.content}`
+  msg.classList.add("list-group-item", "flexli")
+  document.querySelector('#messages').appendChild(msg)
+  let time = document.createElement("span")
+  time.setAttribute("id", "time")
+  time.innerHTML = obj.datetime
+  msg.appendChild(content)
+  msg.appendChild(time);
 }
 
 function initDB() {
-    const mariadb = require('mariadb');
-const pool = mariadb.createPool({
-     host: 'localhost', 
-     user:'root', 
-     password: '',
-     database:"beerChat"
-});
-return pool
+  const mysql = require('mysql');
+  const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'beerChat'
+  });
+  return connection;
 }
 
-function insertMessage(pool, content, datetime, sender){
-    pool.getConnection()
-    .then(conn => {
-    
-    conn.query(`INSERT INTO message(content, datetime, sender) value('${content}', '${datetime}', '${sender}')`)
-        .then((res) => {
-          console.log(res)
-          conn.end()
-        })
-        .catch(err => {
-          //handle error
-          console.log(err) 
-          conn.end();
-        })
-        
-    }).catch(err => {
-      console.log(err)
+function insertMessage(connection, content, datetime, sender) {
+  connection.connect();
+  return new Promise((resolve, reject) => {
+    connection.query(`INSERT INTO message(content, datetime, sender) VALUES (?, ?, ?)`, [content, datetime, sender], function(error, result){
+      if (error) reject(error)
+      resolve(result)
+    })
+  })
+}
+
+function getHistory() {
+  let connection = initDB()
+  connection.connect()
+  return new Promise((resolve, reject) => {
+    connection.query('SELECT * FROM message', function (error, results) {
+      if (error) reject(error);
+      resolve(results);
     });
+  });
 }
 
-function getHistory(pool){
-  let data = []
-  pool.getConnection()
-    .then(conn => {
-    conn.query(`SELECT * FROM message`)
-        .then((res) => {
-          data = res
-        })
-        .catch(err => {
-          //handle error
-          console.log(err) 
-          conn.end();
-        })
-    }).catch(err => {
-      console.log(err)
-    });
-    return data
+function broadcastAndRespond(io, obj, answer) {
+  io.emit('message', {content: obj.message, datetime: obj.date, sender:obj.sender})
+  io.emit('response', {content: answer, sender: 'PunkBot', datetime:obj.date})
 }
 
-module.exports = {assignActive, initDB, printMessage, insertMessage, getHistory}
+
+module.exports = {
+  assignActive: assignActive,
+  printMessage: printMessage,
+  initDB: initDB,
+  insertMessage: insertMessage,
+  getHistory: getHistory,
+  broadcastAndRespond: broadcastAndRespond,
+}
