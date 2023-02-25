@@ -36,7 +36,10 @@ block contact
         })
 
         socket.on("history", function(messages){
-            printMessage(messages, true)
+            console.log(messages.result)
+            for (message of messages.result){
+            printMessage(message, true)
+            }
         })
 
         socket.on('message', function(message) {

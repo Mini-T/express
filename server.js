@@ -64,6 +64,8 @@ io.on("connection", (socket) => {
     let registerDb = false
     let bot_response = 'We received your message and will get back to you ASAP !'
     socket.on("message", obj => {
+        obj.message = encodeURI(obj.message)
+        console.log(obj.message)
         if(!!registerDb){
             myfunctions.insertMessage(myfunctions.initDB(), bot_response, obj.date, 'PunkBot').then((result) => console.log(result))
             myfunctions.insertMessage(myfunctions.initDB(), obj.message, obj.date, obj.sender).then((result) => console.log(result))
