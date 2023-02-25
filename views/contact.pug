@@ -23,7 +23,6 @@ block contact
             if(!!message) {
                 let date = new Date()
                 date = date.toLocaleString().split(" ").join(' à ')
-                console.log(date)
                 socket.emit('message',{message: message, date: date, sender: 'You'});
                 document.querySelector('#message').value = '';
                 return false; 
@@ -37,13 +36,6 @@ block contact
         })
 
         socket.on("history", function(messages){
-
-            let timeField = document.querySelectorAll('span#time')
-            i = 0
-            for(field of timeField) {
-                console.log(field.textContent)
-                //- messages.result.filter((message) => message.datetime === field.text)
-            }
             printMessage(messages, true)
         })
 

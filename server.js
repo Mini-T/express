@@ -9,7 +9,6 @@ const { render } = require('pug');
 const app = express()
 const server = http.createServer(app)
 const myfunctions = require('./public/functions')
-console.log(myfunctions)
 dotenv.config()
 app.set("view engine", "pug");
 app.set('views', './views')

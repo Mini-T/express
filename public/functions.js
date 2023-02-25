@@ -13,7 +13,7 @@ function printMessage(obj, isHistory = false) {
       msg.classList.add("list-group-item", "flexli")
       document.querySelector('#messages').insertBefore(msg, document.querySelector('.list-group-item'))
       let time = document.createElement("span")
-      time.setAttribute("id", "time")
+      time.setAttribute("class", "time")
       time.innerHTML = message.datetime
       msg.appendChild(content)
       msg.appendChild(time);
@@ -26,7 +26,7 @@ function printMessage(obj, isHistory = false) {
   msg.classList.add("list-group-item", "flexli")
   document.querySelector('#messages').appendChild(msg)
   let time = document.createElement("span")
-  time.setAttribute("id", "time")
+  time.setAttribute("class", "time")
   time.innerHTML = obj.datetime
   msg.appendChild(content)
   msg.appendChild(time);
