@@ -46,3 +46,9 @@ ALTER TABLE `message`
 COMMIT;
 
 ```
+
+# Fonctionnalités
+
+accueil : simple page avec un lien vers la liste des boissons,
+boissons : liste des boissons
+boisson_details : page de détails de la boisson

@@ -6,6 +6,16 @@ body {
     flex-wrap: wrap;
     flex-direction: row;
 }
+.sep {
+    border-right: solid rgb(222, 222, 222) 1px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.footer{
+    margin-top: 10px;
+    padding-top: 10px;
+    background: #f8f9fa;
+}
 .wid{
     min-width: fit-content;
     display: flex;
@@ -47,4 +57,13 @@ li.list-group-item.flexli > .time {
 #history {
     left: 91%;
     position: relative;
+}
+a.linkDetails {
+    padding: 10px;
+    width: 100%;
+    border-radius: 0px;
+}
+
+div.card-body {
+    padding: 0px
 }

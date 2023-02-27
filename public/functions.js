@@ -1,4 +1,13 @@
 
+const bot_responses = {
+  default: 'We received your message and will get back to you ASAP !',
+  closeSuccess: 'Database disabled',
+  closeFailure: "Database isn't activated, activate it with /storeToDb",
+  openSuccess: 'Database activated, every message from you will now be stored',
+  openFailure: 'Database is already activated, disable it with /closeDb',
+  storeSyntax: "the /storeToDb command doesn't take any argument",
+  closeSyntax: "the /closeDb command doesn't take any argument"
+}
 // assigne l'onglet active a celui de la page actuelle, est utilisé dans navbar.pug
 function assignActive(id) {
   if (id) { document.getElementById(id).classList.add("active") }
@@ -68,6 +77,15 @@ function broadcastAndRespond(io, obj, answer) {
   io.emit('response', {content: answer, sender: 'PunkBot', datetime:obj.date})
 }
 
+function commandCheck(io, obj, msg, registerDb) {
+  if(!registerDb) {
+    broadcastAndRespond(io, obj, bot_responses[`${msg}Failure`])
+    return
+  }
+  broadcastAndRespond(io, obj, bot_responses[`${msg}Success`])
+  registerDb = false
+  return
+}
 
 module.exports = {
   assignActive: assignActive,
@@ -76,4 +94,5 @@ module.exports = {
   insertMessage: insertMessage,
   getHistory: getHistory,
   broadcastAndRespond: broadcastAndRespond,
+  commandCheck:commandCheck
 }

@@ -1,4 +1,4 @@
-extends navbar
+extends layout
 
 block boisson_details
     .col-md-4.mb-4
@@ -10,4 +10,3 @@ block boisson_details
             p.card-text Description: #{data.description}
             p.card-text Taux d'alcool: #{data.abv}
             p.card-text First brewed on #{data.first_brewed}
-            a.btn.btn-primary(href=`boisson-details/#{data.id}`) #{data.name}

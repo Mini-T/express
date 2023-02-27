@@ -1,4 +1,4 @@
-extends navbar 
+extends layout 
 
 block boissons
   div.list
@@ -7,7 +7,4 @@ block boissons
         .card
           img.card-img-top(src=beer.image_url, alt="" style="height: 400px; object-fit:contain; width:auto")
           .card-body
-            h5.card-title=beer.name
-            span Tag-line: #{beer.tagline} 
-            p.card-text Description: #{beer.description}
-            a.btn.btn-primary(href=`boisson-details/${beer.id}`) #{beer.name}
+            a.btn.linkDetails.btn-primary(href=`boisson-details/${beer.id}`) #{beer.name}
